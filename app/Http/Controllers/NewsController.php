@@ -1,8 +1,9 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\News;
+use Illuminate\Support\Str;
 
 class NewsController extends Controller
 {
@@ -28,7 +29,20 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'title' => 'required|max:255',
+            'content' => 'nullable',
+            'image' => 'nullable|image|max:2048',
+            'published_at' => 'nullable|date',
+        ]);
+    
+        if ($request->hasFile('image')) {
+            $validated['image'] = $request->file('image')->store('news', 'public');
+        }
+    
+        News::create($validated);
+    
+        return redirect()->route('news.index')->with('success', 'Nieuwsbericht succesvol toegevoegd!');
     }
 
     /**
