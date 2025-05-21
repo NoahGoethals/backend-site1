@@ -33,7 +33,7 @@ class NewsController extends Controller
         $validated = $request->validate([
             'title' => 'required|max:255',
             'content' => 'nullable',
-            'image' => 'nullable|image|max:2048',
+'image' => 'nullable|mimetypes:image/jpeg,image/png,image/jpg,image/webp,image/gif|max:2048',
             'published_at' => 'nullable|date',
         ]);
     
@@ -60,7 +60,8 @@ class NewsController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $item = News::findOrFail($id);
+        return view('news.edit', compact('item'));
     }
 
     /**
@@ -68,7 +69,22 @@ class NewsController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $item = News::findOrFail($id);
+
+        $validated = $request->validate([
+            'title' => 'required|max:255',
+            'content' => 'nullable',
+'image' => 'nullable|mimetypes:image/jpeg,image/png,image/jpg,image/webp,image/gif|max:2048',
+            'published_at' => 'nullable|date',
+        ]);
+    
+        if ($request->hasFile('image')) {
+            $validated['image'] = $request->file('image')->store('news', 'public');
+        }
+    
+        $item->update($validated);
+    
+        return redirect()->route('news.index')->with('success', 'Nieuwsbericht succesvol bijgewerkt!');
     }
 
     /**

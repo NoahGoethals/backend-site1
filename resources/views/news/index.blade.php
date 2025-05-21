@@ -13,13 +13,16 @@
         <ul>
             @foreach ($news as $item)
                 <li>
-                    <h3>
-                        <a href="{{ route('news.show', $item->id) }}">
-                            {{ $item->title }}
-                        </a>
-                    </h3>
-                    <p>{{ $item->content }}</p>
-                    <small>Geplaatst op: {{ $item->published_at ?? 'Onbekend' }}</small>
+                <h3>
+    <a href="{{ route('news.show', $item->id) }}">
+        {{ $item->title }}
+    </a>
+</h3>
+<p>{{ $item->content }}</p>
+<small>Geplaatst op: {{ $item->published_at ?? 'Onbekend' }}</small><br>
+
+<a href="{{ route('news.edit', $item->id) }}">✏️ Bewerken</a>
+
                 </li>
             @endforeach
         </ul>
