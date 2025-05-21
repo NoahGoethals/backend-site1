@@ -87,14 +87,10 @@ class NewsController extends Controller
         return redirect()->route('news.index')->with('success', 'Nieuwsbericht succesvol bijgewerkt!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $item = News::findOrFail($id);
 
-        // Verwijder afbeelding uit opslag als die er is
         if ($item->image) {
             \Storage::disk('public')->delete($item->image);
         }
