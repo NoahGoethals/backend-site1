@@ -92,6 +92,16 @@ class NewsController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $item = News::findOrFail($id);
+
+        // Verwijder afbeelding uit opslag als die er is
+        if ($item->image) {
+            \Storage::disk('public')->delete($item->image);
+        }
+    
+        $item->delete();
+    
+        return redirect()->route('news.index')->with('success', 'Nieuwsbericht succesvol verwijderd!');
+    
     }
 }
