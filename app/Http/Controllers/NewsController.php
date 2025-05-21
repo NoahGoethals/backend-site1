@@ -21,7 +21,8 @@ class NewsController extends Controller
      */
     public function create()
     {
-        //
+        return view('news.create');
+
     }
 
     /**
@@ -50,7 +51,8 @@ class NewsController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $item = News::findOrFail($id);
+    return view('news.show', compact('item'));
     }
 
     /**

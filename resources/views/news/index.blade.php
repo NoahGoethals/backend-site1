@@ -13,7 +13,11 @@
         <ul>
             @foreach ($news as $item)
                 <li>
-                    <h3>{{ $item->title }}</h3>
+                    <h3>
+                        <a href="{{ route('news.show', $item->id) }}">
+                            {{ $item->title }}
+                        </a>
+                    </h3>
                     <p>{{ $item->content }}</p>
                     <small>Geplaatst op: {{ $item->published_at ?? 'Onbekend' }}</small>
                 </li>
