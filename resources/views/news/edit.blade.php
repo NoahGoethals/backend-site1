@@ -1,5 +1,59 @@
 @extends('layouts.app')
+<style>
+    body {
+        color: #f0f0f0;
+        background-color: #0f172a;
+    }
 
+    input[type="text"],
+    input[type="datetime-local"],
+    input[type="file"],
+    textarea {
+        background-color: #1f2937 !important;
+        color: #f0f0f0 !important;
+        border: 1px solid #475569 !important;
+        padding: 8px;
+        width: 100%;
+        border-radius: 4px;
+    }
+
+    input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+        filter: invert(1); /* maakt icoon wit */
+    }
+
+    input::file-selector-button {
+        background-color: #334155 !important;
+        color: #f0f0f0 !important;
+        border: none;
+        padding: 6px 12px;
+        cursor: pointer;
+    }
+
+    label {
+        font-weight: bold;
+        display: block;
+        margin-top: 1rem;
+        margin-bottom: 0.3rem;
+    }
+
+    small {
+        color: #ff6b6b;
+    }
+
+    button {
+        background-color: #2563eb;
+        color: white;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        margin-top: 1rem;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #1d4ed8;
+    }
+</style>
 @section('content')
 <div class="container">
     <h1>Nieuwsbericht bewerken</h1>
