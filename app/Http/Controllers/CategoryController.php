@@ -15,17 +15,19 @@ class CategoryController extends Controller
 
     public function create()
     {
-        $categories = Category::with('faqs')->get(); // Of gewoon Category::all(); als je de faqs niet nodig hebt hier
-        return view('categories.create', compact('categories'));    }
+        return view('categories.create');
+    }
 
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255|unique:categories,name',
+            'description' => 'nullable|string',
         ]);
 
         Category::create([
             'name' => $request->name,
+            'description' => $request->description,
         ]);
 
         return redirect()->route('categories.index')->with('success', 'Categorie toegevoegd.');
@@ -40,10 +42,12 @@ class CategoryController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255|unique:categories,name,' . $category->id,
+            'description' => 'nullable|string',
         ]);
 
         $category->update([
             'name' => $request->name,
+            'description' => $request->description,
         ]);
 
         return redirect()->route('categories.index')->with('success', 'Categorie bijgewerkt.');

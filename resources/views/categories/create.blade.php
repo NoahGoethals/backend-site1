@@ -15,6 +15,14 @@
             @enderror
         </div>
 
+        <div class="mb-4">
+            <label for="description" class="block text-white font-medium mb-2">Beschrijving</label>
+            <textarea name="description" id="description" class="w-full p-2 rounded bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400">{{ old('description') }}</textarea>
+            @error('description')
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+            @enderror
+        </div>
+
         <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
             Opslaan
         </button>

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string('name'); // ✅ Verplichte kolom voor de naam van de categorie
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
@@ -25,4 +26,5 @@ return new class extends Migration
     {
         Schema::dropIfExists('categories');
     }
+    
 };
