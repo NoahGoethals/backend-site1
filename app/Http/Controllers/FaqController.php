@@ -59,8 +59,8 @@ class FaqController extends Controller
      */
     public function edit(Faq $faq)
     {
-        $categories = Category::all();
-        return view('faqs.edit', compact('faq', 'categories'));
+        $categories = Category::all(); // voor dropdown
+    return view('faqs.edit', compact('faq', 'categories'));
     }
 
     /**

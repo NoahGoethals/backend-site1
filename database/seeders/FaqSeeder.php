@@ -1,4 +1,5 @@
 <?php
+
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
@@ -9,12 +10,14 @@ class FaqSeeder extends Seeder
 {
     public function run(): void
     {
-        $cat = Category::firstOrCreate(['name' => 'Algemeen']);
+        // Zorg dat de categorie 'Algemeen' bestaat
+        $category = Category::firstOrCreate(['name' => 'Algemeen']);
 
+        // Voeg een test-FAQ toe
         Faq::create([
-            'question' => 'Hoe werkt deze website?',
-            'answer' => 'Deze site toont veelgestelde vragen per categorie.',
-            'category_id' => $cat->id,
+            'question' => 'Hoe werkt deze site?',
+            'answer' => 'Je navigeert via het menu.',
+            'category_id' => $category->id,
             'published_at' => now(),
         ]);
     }

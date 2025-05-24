@@ -30,5 +30,6 @@ class DatabaseSeeder extends Seeder
             'published_at' => now(),
             'category_id' => $category->id,
         ]);
+
     }
 }
