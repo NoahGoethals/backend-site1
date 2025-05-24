@@ -8,18 +8,27 @@ use Illuminate\Http\Request;
 
 class FaqController extends Controller
 {
+    /**
+     * Toon alle FAQ's gegroepeerd per categorie
+     */
     public function index()
     {
-        $faqs = Faq::with('category')->orderByDesc('published_at')->get();
-        return view('faqs.index', compact('faqs'));
+        $categories = Category::with('faqs')->get();
+        return view('faqs.index', compact('categories'));
     }
 
+    /**
+     * Toon het formulier om een nieuwe FAQ aan te maken
+     */
     public function create()
     {
         $categories = Category::all();
         return view('faqs.create', compact('categories'));
     }
 
+    /**
+     * Sla een nieuwe FAQ op in de database
+     */
     public function store(Request $request)
     {
         $request->validate([
@@ -30,20 +39,30 @@ class FaqController extends Controller
         ]);
 
         Faq::create($request->all());
+
         return redirect()->route('faqs.index')->with('success', 'FAQ toegevoegd.');
     }
 
+    /**
+     * Toon één specifieke FAQ (optioneel)
+     */
     public function show(Faq $faq)
     {
         return view('faqs.show', compact('faq'));
     }
 
+    /**
+     * Toon het formulier om een FAQ te bewerken
+     */
     public function edit(Faq $faq)
     {
         $categories = Category::all();
         return view('faqs.edit', compact('faq', 'categories'));
     }
 
+    /**
+     * Werk een bestaande FAQ bij
+     */
     public function update(Request $request, Faq $faq)
     {
         $request->validate([
@@ -54,9 +73,13 @@ class FaqController extends Controller
         ]);
 
         $faq->update($request->all());
+
         return redirect()->route('faqs.index')->with('success', 'FAQ bijgewerkt.');
     }
 
+    /**
+     * Verwijder een FAQ
+     */
     public function destroy(Faq $faq)
     {
         $faq->delete();
