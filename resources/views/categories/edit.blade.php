@@ -1,16 +1,23 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-md mx-auto py-8">
-    <h1 class="text-2xl font-bold mb-4">Categorie bewerken</h1>
+<div class="max-w-2xl mx-auto py-8">
+    <h1 class="text-2xl font-bold text-white mb-6">Categorie bewerken</h1>
 
-    <form action="{{ route('categories.update', $category) }}" method="POST">
-        @csrf @method('PUT')
-        <div class="mb-4">
-            <label for="name" class="block font-semibold mb-1">Naam</label>
-            <input type="text" name="name" id="name" class="w-full rounded border p-2" value="{{ old('name', $category->name) }}" required>
+    <form action="{{ route('categories.update', $category) }}" method="POST" class="space-y-4">
+        @csrf
+        @method('PUT')
+
+        <div>
+            <label for="name" class="block text-white font-semibold">Naam van de categorie</label>
+            <input type="text" name="name" id="name" value="{{ old('name', $category->name) }}" required
+                   class="w-full mt-1 p-2 rounded bg-gray-800 text-white border border-gray-600">
         </div>
-        <button type="submit" class="btn btn-primary">Bijwerken</button>
+
+        <button type="submit"
+                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded">
+            Bijwerken
+        </button>
     </form>
 </div>
 @endsection

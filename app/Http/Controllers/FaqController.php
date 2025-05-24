@@ -13,7 +13,10 @@ class FaqController extends Controller
      */
     public function index()
     {
-        $categories = Category::with('faqs')->get();
+        $categories = Category::with(['faqs' => function ($query) {
+            $query->orderByDesc('published_at');
+        }])->orderBy('name')->get();
+    
         return view('faqs.index', compact('categories'));
     }
 
