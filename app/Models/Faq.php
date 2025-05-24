@@ -11,4 +11,8 @@ class Faq extends Model
     {
         return $this->belongsTo(Category::class, 'category_id');
     }
+    protected $casts = [
+        'published_at' => 'datetime',
+    ];
+    
 }

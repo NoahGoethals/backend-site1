@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Category;
+use App\Models\Faq;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,11 +13,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Voer de seeder uit voor de admin-gebruiker
+        $this->call([
+            AdminUserSeeder::class,
+        ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // Voeg één categorie toe
+        $category = Category::create([
+            'name' => 'Algemeen',
+        ]);
+
+        // Voeg één voorbeeld-FAQ toe aan die categorie
+        Faq::create([
+            'question' => 'Hoe werkt deze site?',
+            'answer' => 'Je navigeert via het menu.',
+            'published_at' => now(),
+            'category_id' => $category->id,
         ]);
     }
 }
