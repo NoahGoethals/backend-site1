@@ -10,6 +10,10 @@ use App\Http\Controllers\DashboardController;
 // ✅ Startpagina = nieuws-overzicht
 Route::get('/', [NewsController::class, 'index'])->middleware(['auth'])->name('home');
 
+// Publieke profielpagina – buiten auth!
+Route::get('/profile/{user}', [ProfileController::class, 'show'])->name('profile.public');
+
+
 // ✅ Routes voor ingelogde gebruikers
 Route::middleware(['auth'])->group(function () {
     Route::resource('news', NewsController::class);

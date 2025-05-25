@@ -40,18 +40,19 @@ class CategoryController extends Controller
 
     public function update(Request $request, Category $category)
     {
-        $request->validate([
-            'name' => 'required|string|max:255|unique:categories,name,' . $category->id,
-            'description' => 'nullable|string',
+        $validated = $request->validate([
+            'question' => 'required|string|max:255',
+            'answer' => 'required|string',
+            'category_id' => 'required|exists:categories,id',
+            'published_at' => 'nullable|date',
         ]);
-
-        $category->update([
-            'name' => $request->name,
-            'description' => $request->description,
-        ]);
-
-        return redirect()->route('categories.index')->with('success', 'Categorie bijgewerkt.');
+    
+        dd($validated); // tijdelijk voor debug
+        $faq->update($validated);
+    
+        return redirect()->route('faqs.index')->with('success', 'FAQ bijgewerkt.');
     }
+    
 
     public function destroy(Category $category)
     {
