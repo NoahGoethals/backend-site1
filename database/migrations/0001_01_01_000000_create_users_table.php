@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('username')->nullable(); // ✅ Gebruikersnaam
             $table->text('bio')->nullable(); // ✅ Over mij
             $table->date('birthdate')->nullable(); // ✅ Geboortedatum
+            $table->string('image')->nullable(); // ✅ Profielfoto opslaan
             $table->string('profile_photo_path')->nullable(); // ✅ Profielfoto pad
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();

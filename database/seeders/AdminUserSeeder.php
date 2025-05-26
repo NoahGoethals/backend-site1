@@ -14,6 +14,10 @@ class AdminUserSeeder extends Seeder
             ['email' => 'admin@ehb.be'],
             [
                 'name' => 'Admin',
+                'username' => 'admin',
+                'bio' => 'Ik ben de admin van deze site.',
+                'birthdate' => '1990-01-01',
+                'image' => null, // of geef pad als je wil testen
                 'password' => Hash::make('Password!321'),
                 'email_verified_at' => now(),
             ]

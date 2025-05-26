@@ -1,67 +1,124 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Profiel bewerken
-        </h2>
-    </x-slot>
+{{-- resources/views/profile.blade.php --}}
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Profile</title>
+  @vite(['resources/css/app.css','resources/js/app.js'])
+</head>
+<body class="font-sans antialiased bg-gray-100 dark:bg-gray-900">
 
-    @php
-        $user = auth()->user();
-    @endphp
+  {{-- Navigatie --}}
+  @include('layouts.navigation')
 
-    <div class="py-10">
-        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
+  {{-- Direct na navigatie, klein top-margintje --}}
+  <section class="mt-4 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg">
+      <div class="p-6">
 
-                @if (session('status') === 'profile-updated')
-                    <p class="text-green-400 mb-4">Profiel succesvol bijgewerkt!</p>
-                @endif
+        {{-- Header --}}
+        <h1 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
+          {{ __('Profile') }}
+        </h1>
+        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+          {{ __('View and update your profile information.') }}
+        </p>
 
-                <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data" class="space-y-4">
-                    @csrf
-                    @method('PATCH')
+        {{-- Formulier --}}
+        <form method="POST" action="{{ route('profile.update') }}" class="space-y-4">
+          @csrf @method('PATCH')
 
-                    <!-- Gebruikersnaam -->
-                    <div>
-                        <x-input-label for="username" value="Gebruikersnaam" />
-                        <x-text-input id="username" class="block mt-1 w-full" type="text" name="username"
-                                      :value="old('username', $user->username)" />
-                        <x-input-error :messages="$errors->get('username')" class="mt-2" />
-                    </div>
+          {{-- Profielfoto --}}
+          <div class="flex items-center mb-4">
+            <img src="{{ $user->image_url ?? asset('default-avatar.png') }}"
+                 alt="{{ __('Profile Image') }}"
+                 class="w-16 h-16 rounded-full object-cover border" />
+          </div>
 
-                    <!-- Bio -->
-                    <div>
-                        <x-input-label for="bio" value="Over mij" />
-                        <textarea id="bio" name="bio" rows="4" class="block w-full rounded dark:bg-gray-700 dark:text-white">{{ old('bio', $user->bio) }}</textarea>
-                        <x-input-error :messages="$errors->get('bio')" class="mt-2" />
-                    </div>
+          {{-- Naam --}}
+          <div>
+            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              {{ __('Name') }}
+            </label>
+            <input id="name" name="name" type="text"
+                   class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200"
+                   value="{{ old('name',$user->name) }}"
+                   required autocomplete="name" />
+            @error('name')
+              <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+            @enderror
+          </div>
 
-                    <!-- Geboortedatum -->
-                    <div>
-                        <x-input-label for="birthdate" value="Geboortedatum" />
-                        <x-text-input id="birthdate" class="block mt-1 w-full" type="date" name="birthdate"
-                                      :value="old('birthdate', $user->birthdate)" />
-                        <x-input-error :messages="$errors->get('birthdate')" class="mt-2" />
-                    </div>
+          {{-- Username --}}
+          <div>
+            <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              {{ __('Username') }}
+            </label>
+            <input id="username" name="username" type="text"
+                   class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200"
+                   value="{{ old('username',$user->username) }}"
+                   required autocomplete="username" />
+            @error('username')
+              <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+            @enderror
+          </div>
 
-                    <!-- Profielfoto -->
-                    <div>
-                        <x-input-label for="image" value="Profielfoto" />
-                        @if ($user->image)
-                            <div class="mb-2">
-                                <img src="{{ asset('storage/' . $user->image) }}" class="h-24 w-24 rounded-full object-cover">
-                            </div>
-                        @endif
-                        <input type="file" id="image" name="image" class="block mt-1 w-full text-white">
-                        <x-input-error :messages="$errors->get('image')" class="mt-2" />
-                    </div>
+          {{-- Email --}}
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              {{ __('Email') }}
+            </label>
+            <input id="email" name="email" type="email"
+                   class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200"
+                   value="{{ old('email',$user->email) }}"
+                   required autocomplete="email" />
+            @error('email')
+              <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+            @enderror
 
-                    <!-- Submit -->
-                    <div>
-                        <x-primary-button>Opslaan</x-primary-button>
-                    </div>
-                </form>
-            </div>
-        </div>
+            @if($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
+              <p class="mt-2 text-sm text-gray-800 dark:text-gray-200">
+                {{ __('Your email address is unverified.') }}
+                <button form="send-verification" class="underline text-indigo-600 dark:text-indigo-400 ml-2">
+                  {{ __('Re-send verification email') }}
+                </button>
+              </p>
+            @endif
+          </div>
+
+          {{-- Hidden verify-form --}}
+          <form id="send-verification" method="POST" action="{{ route('verification.send') }}">@csrf</form>
+
+          {{-- Geboortedatum --}}
+          <div>
+            <label for="birthdate" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              {{ __('Birthdate') }}
+            </label>
+            <input id="birthdate" name="birthdate" type="date"
+                   class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200"
+                   value="{{ old('birthdate',$user->birthdate) }}" />
+            @error('birthdate')
+              <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+            @enderror
+          </div>
+
+          {{-- Bio --}}
+          <div>
+            <label for="bio" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              {{ __('Bio') }}
+            </label>
+            <textarea id="bio" name="bio" rows="3"
+                      class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200">{{ old('bio',$user->bio) }}</textarea>
+            @error('bio')
+              <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+            @enderror
+          </div>
+
+        </form>
+      </div>
     </div>
-</x-app-layout>
+  </section>
+
+</body>
+</html>
