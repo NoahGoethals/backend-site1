@@ -17,24 +17,34 @@ class ProfileController extends Controller
     public function edit(Request $request): View
     {
         $user = auth()->user();
-    return view('profile.edit', compact('user'));
+        return view('profile.edit', ['user' => Auth::user()]);
     }
 
     /**
      * Update the user's profile information.
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
-    {
-        $request->user()->fill($request->validated());
+{
+    $user = $request->user();
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
+    $validated = $request->validated();
 
-        $request->user()->save();
-
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+    // Verwerk image upload indien aanwezig
+    if ($request->hasFile('image')) {
+        $imagePath = $request->file('image')->store('profiles', 'public');
+        $validated['image'] = $imagePath;
     }
+
+    // Reset email verificatie indien gewijzigd
+    if ($user->email !== $validated['email']) {
+        $user->email_verified_at = null;
+    }
+
+    $user->fill($validated)->save();
+
+    return Redirect::route('profile.edit')->with('status', 'profile-updated');
+}
+
 
     /**
      * Delete the user's account.
@@ -60,7 +70,7 @@ class ProfileController extends Controller
 
     public function show(\App\Models\User $user)
 {
-    return view('profile.show', compact('user'));
+    return view('profile.edit', ['user' => Auth::user()]);
 }
 
 }

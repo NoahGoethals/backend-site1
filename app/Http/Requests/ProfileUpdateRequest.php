@@ -23,6 +23,11 @@ class ProfileUpdateRequest extends FormRequest
                 'lowercase',
                 'email',
                 'max:255',
+                'username' => 'nullable|string|max:255',
+'birthdate' => 'nullable|date',
+'bio' => 'nullable|string|max:1000',
+'image' => 'nullable|image|max:2048',
+
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
         ];
