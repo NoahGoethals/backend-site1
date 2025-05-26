@@ -30,11 +30,22 @@
           @csrf @method('PATCH')
 
           {{-- Profielfoto --}}
-          <div class="flex items-center mb-4">
-            <img src="{{ $user->image_url ?? asset('default-avatar.png') }}"
-                 alt="{{ __('Profile Image') }}"
-                 class="w-16 h-16 rounded-full object-cover border" />
-          </div>
+<div class="flex items-center mb-4">
+  @if($user->image)
+    <img
+      src="{{ asset('storage/' . $user->image) }}"
+      alt="{{ $user->name }}’s profielfoto"
+      class="w-16 h-16 rounded-full object-cover border"
+    />
+  @else
+    <img
+      src="{{ asset('images/default-avatar.png') }}"
+      alt="Standaard profielfoto"
+      class="w-16 h-16 rounded-full object-cover border"
+    />
+  @endif
+</div>
+
 
           {{-- Naam --}}
           <div>
