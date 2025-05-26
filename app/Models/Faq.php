@@ -5,14 +5,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Faq extends Model
 {
-    protected $fillable = ['question', 'answer', 'published_at', 'category_id'];
+    protected $fillable = ['question','answer','category_id'];
 
     public function category()
     {
-        return $this->belongsTo(Category::class, 'category_id');
+        return $this->belongsTo(Category::class);
     }
-    protected $casts = [
-        'published_at' => 'datetime',
-    ];
-    
 }

@@ -1,77 +1,83 @@
 <?php
 
+// app/Http/Controllers/FaqController.php
 namespace App\Http\Controllers;
 
 use App\Models\Faq;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
+
 class FaqController extends Controller
 {
-    /**
-     * Toon alle FAQ's gegroepeerd per categorie
-     */
+    // Publieke lijst, gegroepeerd per categorie
     public function index()
     {
-        $categories = Category::all()->sortBy('name');
-
-        foreach ($categories as $category) {
-            $category->faqs = $category->faqs()->orderByDesc('published_at')->get();
-        };
-
+        $categories = Category::with('faqs')->get();
         return view('faqs.index', compact('categories'));
     }
 
-    /**
-     * Toon het formulier om een nieuwe FAQ aan te maken
-     */
-    public function create()
+    // === Admin CRUD ===
+
+    public function create(Request $req)
     {
         $categories = Category::all();
         return view('faqs.create', compact('categories'));
     }
 
-    /**
-     * Sla een nieuwe FAQ op in de database
-     */
-    public function store(Request $request)
+    public function store(Request $req)
     {
-        $validated = $request->validate([
-            'question'      => 'required|string|max:255',
-            'answer'        => 'required|string',
-            'category_id'   => 'required|exists:categories,id',
-            'published_at'  => 'required|date',
+        $data = $req->validate([
+            'question'    => 'required|string|max:255',
+            'answer'      => 'required|string',
+            'category_id' => 'required|exists:categories,id',
         ]);
-
-        Faq::create($validated);
-
-        return redirect()->route('faqs.index')->with('success', 'FAQ toegevoegd.');
+        Faq::create($data);
+        return redirect()->route('faqs.index')->with('success','Vraag toegevoegd');
     }
 
-    /**
-     * Toon het formulier om een FAQ te bewerken
-     */
     public function edit(Faq $faq)
     {
-       
+        $categories = Category::all();
+        return view('faqs.edit', compact('faq','categories'));
     }
 
-    /**
-     * Werk een bestaande FAQ bij in de database
-     */
-    public function update(Request $request, Faq $faq)
-{
-    
-}
+    public function update(Request $req, Faq $faq)
+    {
+        $data = $req->validate([
+            'question'    => 'required|string|max:255',
+            'answer'      => 'required|string',
+            'category_id' => 'required|exists:categories,id',
+        ]);
+        $faq->update($data);
+        return redirect()->route('faqs.index')->with('success','Vraag bijgewerkt');
+    }
 
-
-    /**
-     * Verwijder een FAQ
-     */
     public function destroy(Faq $faq)
     {
         $faq->delete();
-
-        return redirect()->route('faqs.index')->with('success', 'FAQ verwijderd.');
+        return redirect()->route('faqs.index')->with('success','Vraag verwijderd');
     }
+
+    public function ask()
+{
+    // Laad de vijf categorieën (of pas aan naar jouw 5 categorieën)
+    $categories = Category::all(); 
+    return view('faqs.ask', compact('categories'));
+}
+public function submit(Request $request)
+{
+    $data = $request->validate([
+        'question'    => 'required|string|max:255',
+        'category_id' => 'required|exists:categories,id',
+    ]);
+
+    // Bewaar met een lege answer, of met default tekst
+    $data['answer'] = ''; 
+
+    \App\Models\Faq::create($data);
+
+    return redirect()->route('faqs.ask')
+                     ->with('success', 'Bedankt! Je vraag is ontvangen.');
+}
 }
