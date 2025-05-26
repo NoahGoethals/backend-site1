@@ -3,7 +3,7 @@
 
 @section('content')
 <div class="max-w-2xl mx-auto py-10">
-    <h1 class="text-2xl font-bold text-white mb-6">FAQ bewerken</h1>
+    <h1 class="text-2xl font-bold text-white mb-6">FAQ bewerken / beantwoorden</h1>
 
     {{-- Error messages --}}
     @if($errors->any())

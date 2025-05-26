@@ -40,6 +40,7 @@ class FaqController extends Controller
     {
         $categories = Category::all();
         return view('faqs.edit', compact('faq','categories'));
+        
     }
 
     public function update(Request $req, Faq $faq)
