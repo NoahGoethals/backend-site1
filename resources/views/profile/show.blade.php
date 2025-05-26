@@ -1,49 +1,51 @@
-{{-- resources/views/profile.blade.php --}}
+{{-- resources/views/profile/show.blade.php --}}
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Profile</title>
+  <title>Bewerk Profiel</title>
   @vite(['resources/css/app.css','resources/js/app.js'])
 </head>
 <body class="font-sans antialiased bg-gray-100 dark:bg-gray-900">
-
-  {{-- Navigatie --}}
   @include('layouts.navigation')
 
-  {{-- Direct na navigatie, klein top-margintje --}}
   <section class="mt-4 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg">
       <div class="p-6">
-
-        {{-- Header --}}
-        <h1 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
-          {{ __('Profile') }}
+        <h1 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
+          {{ __('Profiel bewerken') }}
         </h1>
-        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
-          {{ __('View and update your profile information.') }}
-        </p>
 
-        {{-- Formulier --}}
-        <form method="POST" action="{{ route('profile.update') }}" class="space-y-4">
-          @csrf @method('PATCH')
+        <form method="POST"
+              action="{{ route('profile.update') }}"
+              enctype="multipart/form-data"
+              class="space-y-6">
+          @csrf
+          @method('PATCH')
 
           {{-- Profielfoto --}}
-<div class="flex items-center mb-4">
-  @if($user->image)
-    <img
-      src="{{ asset('storage/' . $user->image) }}"
-      alt="{{ $user->name }}’s profielfoto"
-      class="w-16 h-16 rounded-full object-cover border"
-    />
-  @else
-    <img
-      src="{{ asset('images/default-avatar.png') }}"
-      alt="Standaard profielfoto"
-      class="w-16 h-16 rounded-full object-cover border"
-    />
-  @endif
+<div>
+  <label for="image" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+    {{ __('Profielfoto') }}
+  </label>
+  <input 
+    id="image"
+    name="image"
+    type="file"
+    accept="image/*"
+    class="mt-1 block w-full
+           text-sm text-gray-700 dark:text-gray-200
+           file:mr-4 file:py-2 file:px-4
+           file:rounded-lg file:border-0
+           file:bg-indigo-600 file:text-white
+           file:font-medium
+           hover:file:bg-indigo-500
+           focus:outline-none focus:ring-2 focus:ring-indigo-500"
+  />
+  @error('image')
+    <p class="mt-1 text-red-500 text-sm">{{ $message }}</p>
+  @enderror
 </div>
 
 
@@ -53,12 +55,12 @@
               {{ __('Name') }}
             </label>
             <input id="name" name="name" type="text"
-                   class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200"
-                   value="{{ old('name',$user->name) }}"
-                   required autocomplete="name" />
-            @error('name')
-              <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-            @enderror
+                   value="{{ old('name', $user->name) }}"
+                   required
+                   class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600
+                          bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
+                          focus:ring-indigo-500 focus:border-indigo-500" />
+            @error('name') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
           </div>
 
           {{-- Username --}}
@@ -67,12 +69,12 @@
               {{ __('Username') }}
             </label>
             <input id="username" name="username" type="text"
-                   class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200"
-                   value="{{ old('username',$user->username) }}"
-                   required autocomplete="username" />
-            @error('username')
-              <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-            @enderror
+                   value="{{ old('username', $user->username) }}"
+                   required
+                   class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600
+                          bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
+                          focus:ring-indigo-500 focus:border-indigo-500" />
+            @error('username') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
           </div>
 
           {{-- Email --}}
@@ -81,37 +83,25 @@
               {{ __('Email') }}
             </label>
             <input id="email" name="email" type="email"
-                   class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200"
-                   value="{{ old('email',$user->email) }}"
-                   required autocomplete="email" />
-            @error('email')
-              <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-            @enderror
-
-            @if($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
-              <p class="mt-2 text-sm text-gray-800 dark:text-gray-200">
-                {{ __('Your email address is unverified.') }}
-                <button form="send-verification" class="underline text-indigo-600 dark:text-indigo-400 ml-2">
-                  {{ __('Re-send verification email') }}
-                </button>
-              </p>
-            @endif
+                   value="{{ old('email', $user->email) }}"
+                   required
+                   class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600
+                          bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
+                          focus:ring-indigo-500 focus:border-indigo-500" />
+            @error('email') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
           </div>
 
-          {{-- Hidden verify-form --}}
-          <form id="send-verification" method="POST" action="{{ route('verification.send') }}">@csrf</form>
-
-          {{-- Geboortedatum --}}
+          {{-- Birthdate --}}
           <div>
             <label for="birthdate" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
               {{ __('Birthdate') }}
             </label>
             <input id="birthdate" name="birthdate" type="date"
-                   class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200"
-                   value="{{ old('birthdate',$user->birthdate) }}" />
-            @error('birthdate')
-              <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-            @enderror
+                   value="{{ old('birthdate', $user->birthdate) }}"
+                   class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600
+                          bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
+                          focus:ring-indigo-500 focus:border-indigo-500" />
+            @error('birthdate') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
           </div>
 
           {{-- Bio --}}
@@ -119,24 +109,23 @@
             <label for="bio" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
               {{ __('Bio') }}
             </label>
-            <textarea id="bio" name="bio" rows="3"
-                      class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-200">{{ old('bio',$user->bio) }}</textarea>
-            @error('bio')
-              <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-            @enderror
+            <textarea id="bio" name="bio" rows="4"
+                      class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600
+                             bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
+                             focus:ring-indigo-500 focus:border-indigo-500">{{ old('bio', $user->bio) }}</textarea>
+            @error('bio') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
           </div>
-          <form method="POST" action="{{ route('profile.update') }}" class="space-y-4">
-    @csrf
-    @method('PATCH')
-    {{-- ... al je velden ... --}}
 
-    <button type="submit" class="bg-blue-600 text-white rounded px-4 py-2 mt-4">Opslaan</button>
-</form>
-
+          {{-- Submit --}}
+          <div class="flex justify-end">
+            <button type="submit"
+                    class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-500">
+              {{ __('Opslaan') }}
+            </button>
+          </div>
         </form>
       </div>
     </div>
   </section>
-
 </body>
 </html>
