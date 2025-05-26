@@ -38,6 +38,29 @@
 
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
+        <!-- Username -->
+<div>
+    <label for="username">Username</label>
+    <input id="username" type="text" name="username" value="{{ old('username') }}" required autofocus />
+</div>
+
+<!-- Birthdate -->
+<div>
+    <label for="birthdate">Geboortedatum</label>
+    <input id="birthdate" type="date" name="birthdate" value="{{ old('birthdate') }}" />
+</div>
+
+<!-- Bio -->
+<div>
+    <label for="bio">Over mij</label>
+    <textarea id="bio" name="bio">{{ old('bio') }}</textarea>
+</div>
+
+<!-- Image -->
+<div>
+    <label for="image">Profielfoto</label>
+    <input id="image" type="file" name="image" accept="image/*" />
+</div>
 
         <div class="flex items-center justify-end mt-4">
             <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('login') }}">
