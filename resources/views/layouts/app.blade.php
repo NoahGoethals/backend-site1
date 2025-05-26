@@ -17,24 +17,24 @@
     <!-- Hier komt custom CSS van views -->
     @yield('styles')
 </head>
+<body class="font-sans antialiased bg-gray-100 dark:bg-gray-900">
+    <div id="app">
+        {{-- Navigatie --}}
+        @include('layouts.navigation')
 
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-            @include('layouts.navigation')
+        {{-- Paginaheader indien aanwezig --}}
+        @isset($header)
+            <header class="bg-white dark:bg-gray-800 shadow">
+                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                    {{ $header }}
+                </div>
+            </header>
+        @endisset
 
-            <!-- Page Heading -->
-            @isset($header)
-                <header class="bg-white dark:bg-gray-800 shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endisset
-
-            <!-- Page Content -->
-            <main>
+        {{-- Pagina-inhoud --}}
+        <main class="py-8">
             @yield('content')
-            </main>
-        </div>
-    </body>
+        </main>
+    </div>
+</body>
 </html>

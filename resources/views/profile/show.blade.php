@@ -1,31 +1,40 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-3xl mx-auto py-8 text-white">
-    <div class="bg-gray-900 rounded-lg shadow p-6">
-        <div class="flex items-center space-x-4">
-            @if ($user->profile_picture)
-                <img src="{{ asset('storage/' . $user->profile_picture) }}" class="w-24 h-24 rounded-full object-cover" alt="Profielfoto">
-            @else
-                <div class="w-24 h-24 bg-gray-700 rounded-full flex items-center justify-center text-xl">
-                    {{ strtoupper(substr($user->name, 0, 1)) }}
-                </div>
-            @endif
-
-            <div>
-                <h2 class="text-2xl font-bold">{{ $user->username ?? $user->name }}</h2>
-                @if ($user->birthdate)
-                    <p class="text-sm text-gray-400">Verjaardag: {{ \Carbon\Carbon::parse($user->birthdate)->format('d/m/Y') }}</p>
+    {{-- Container vlak onder de header --}}
+    <div class="pt-8 pb-12 bg-gray-100 dark:bg-gray-900 min-h-[calc(100vh-4rem)]">
+        <div class="max-w-xl mx-auto px-6">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-8 text-center">
+                
+                {{-- Profielfoto --}}
+                @if ($user->profile_photo_path)
+                    <img 
+                        src="{{ asset('storage/' . $user->profile_photo_path) }}" 
+                        alt="Profielfoto van {{ $user->username ?? $user->name }}" 
+                        class="w-32 h-32 rounded-full object-cover border mx-auto mb-4"
+                    >
                 @endif
+
+                {{-- Naam --}}
+                <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+                    {{ $user->username ?? $user->name }}
+                </h1>
+
+                {{-- Bio --}}
+                @if ($user->bio)
+                    <p class="text-gray-700 dark:text-gray-300 mb-3">
+                        <span class="font-semibold">Over mij:</span> {{ $user->bio }}
+                    </p>
+                @endif
+
+                {{-- Geboortedatum --}}
+                @if ($user->birthdate)
+                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                        🎂 Geboortedatum: {{ \Carbon\Carbon::parse($user->birthdate)->format('d/m/Y') }}
+                    </p>
+                @endif
+
             </div>
         </div>
-
-        @if ($user->bio)
-            <div class="mt-6">
-                <h3 class="font-semibold mb-1">Over mij:</h3>
-                <p class="text-gray-300">{{ $user->bio }}</p>
-            </div>
-        @endif
     </div>
-</div>
 @endsection
