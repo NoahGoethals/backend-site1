@@ -69,8 +69,9 @@ class ProfileController extends Controller
 
 
     public function show(\App\Models\User $user)
-{
-    return view('profile.edit', ['user' => Auth::user()]);
-}
+    {
+        return view('profile.show', ['user' => $user]);
+    }
+    
 
 }

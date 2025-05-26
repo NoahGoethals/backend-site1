@@ -125,12 +125,13 @@
               <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
             @enderror
           </div>
-          <div class="flex justify-end mt-6">
-    <a href="{{ route('profile.public', ['user' => $user->id]) }}"
-       class="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
-        Edit Profile
-    </a>
-</div>
+          <form method="POST" action="{{ route('profile.update') }}" class="space-y-4">
+    @csrf
+    @method('PATCH')
+    {{-- ... al je velden ... --}}
+
+    <button type="submit" class="bg-blue-600 text-white rounded px-4 py-2 mt-4">Opslaan</button>
+</form>
 
         </form>
       </div>
