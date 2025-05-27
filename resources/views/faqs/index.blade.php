@@ -15,14 +15,14 @@
       Veelgestelde Vragen
     </h1>
 
-    {{-- ADMIN BEHEER BALK BOVENAAN (alleen voor admin) --}}
-    @auth
-      @if(auth()->user()->is_admin)
-        <div class="mb-8 flex flex-wrap gap-3">
-          <a href="{{ route('faqs.create') }}"
-             class="px-4 py-2 rounded bg-yellow-600 text-white font-semibold hover:bg-yellow-700 transition">
-            ➕ Nieuwe FAQ-vraag
-          </a>
+    {{-- BEHEER BALK BOVENAAN --}}
+    <div class="mb-8 flex flex-wrap gap-3">
+      <a href="{{ route('faqs.ask') }}"
+         class="px-4 py-2 rounded bg-yellow-600 text-white font-semibold hover:bg-yellow-700 transition">
+        ➕ Nieuwe FAQ-vraag
+      </a>
+      @auth
+        @if(auth()->user()->is_admin)
           <a href="{{ route('categories.index') }}"
              class="px-4 py-2 rounded bg-green-600 text-white font-semibold hover:bg-green-700 transition">
             📁 Categorieën beheren
@@ -31,34 +31,17 @@
              class="px-4 py-2 rounded bg-purple-600 text-white font-semibold hover:bg-purple-700 transition">
             ➕ Nieuwe categorie
           </a>
-        </div>
-      @endif
-    @endauth
+        @endif
+      @endauth
+    </div>
 
     @foreach($categories as $category)
       <section class="mb-8 bg-white dark:bg-gray-800 rounded shadow">
-        <header class="px-6 py-4 flex justify-between items-center border-b dark:border-gray-700">
+        <header class="px-6 py-4 flex items-center border-b dark:border-gray-700">
           <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-200">
             {{ $category->name }}
           </h2>
-          {{-- Admin actiegroep categorie --}}
-          @auth
-            @if(auth()->user()->is_admin)
-              <div class="space-x-2 text-sm flex items-center">
-                <a href="{{ route('categories.edit', $category) }}"
-                   class="text-blue-500 hover:underline">Categorie bewerken</a>
-                <form action="{{ route('categories.destroy', $category) }}" method="POST" class="inline">
-                  @csrf @method('DELETE')
-                  <button type="submit" class="text-red-500 hover:underline"
-                          onclick="return confirm('Weet je het zeker?')">Categorie verwijderen</button>
-                </form>
-                <a href="{{ route('faqs.create', ['category_id' => $category->id]) }}"
-                   class="ml-2 px-3 py-1 bg-green-600 text-white rounded hover:bg-green-500">
-                  Nieuwe vraag
-                </a>
-              </div>
-            @endif
-          @endauth
+          {{-- GEEN beheer-links hier! --}}
         </header>
 
         <div class="p-6 space-y-6">
@@ -74,7 +57,7 @@
                       {{ $faq->answer ?: '— nog niet beantwoord —' }}
                     </p>
                   </div>
-                  {{-- Admin acties per FAQ --}}
+                  {{-- Acties per FAQ --}}
                   @auth
                     @if(auth()->user()->is_admin)
                       <div class="ml-6 flex flex-col items-end space-y-1">

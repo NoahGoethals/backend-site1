@@ -15,9 +15,12 @@
     </h1>
 
     @if(session('success'))
-      <div class="mb-4 p-4 bg-green-100 text-green-900 rounded">
-        {{ session('success') }}
-      </div>
+    <div class="mb-4 p-4 rounded shadow
+            bg-green-100 text-green-900
+            dark:bg-green-800 dark:text-white">
+  {{ session('success') }}
+</div>
+
     @endif
 
     <form method="POST" action="{{ route('faqs.submit') }}" class="space-y-6">
@@ -27,12 +30,11 @@
         <label for="question" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
           Je vraag
         </label>
-        <input id="question" name="question" type="text"
-               value="{{ old('question') }}"
-               required
-               class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600
-                      bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
-                      focus:ring-indigo-500 focus:border-indigo-500" />
+        <textarea id="question" name="question" rows="3"
+                  required
+                  class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600
+                         bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
+                         focus:ring-indigo-500 focus:border-indigo-500">{{ old('question') }}</textarea>
         @error('question')
           <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
         @enderror
