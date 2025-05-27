@@ -10,22 +10,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ChatController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Dit zijn alle routes voor je Laravel 12 Backend Web project.
-| - Publieke routes: voor iedereen of niet-ingelogde gebruikers.
-| - Authenticated: enkel voor ingelogde gebruikers (middleware 'auth').
-| - Admin management: zichtbaarheid via Blade, restrictie in controller of policy.
-|
-*/
 
-/* ===========================
- * 1. Publieke routes (toegankelijk voor iedereen)
- * ===========================
- */
 
 // Nieuws-overzicht is standaard afgeschermd (auth)
 Route::get('/', [NewsController::class, 'index'])

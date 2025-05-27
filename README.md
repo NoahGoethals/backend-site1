@@ -1,61 +1,164 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# RSCA Anderlecht Fan Club
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Welkom op de officiële supporterswebsite van **RSCA Anderlecht Fan Club**!  
+Dit platform is gebouwd als eindproject voor het vak **Backend Web** (graduaat Programmeren, EhB), en biedt fans een centrale plek voor nieuws, FAQ’s, chat en contact met de club.
 
-## About Laravel
+## 🌟 Functionaliteiten
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+-   **Login/Registratie:** Veilige authenticatie voor alle gebruikers.
+-   **Publiek profiel:** Elke gebruiker heeft een eigen profielpagina met bio, verjaardag en profielfoto.
+-   **Nieuwsbeheer:** Admins kunnen nieuws toevoegen, aanpassen en verwijderen; bezoekers zien een overzicht & detailpagina.
+-   **FAQ-pagina:** Vragen en antwoorden per categorie, beheerbaar door admins.
+-   **Contactformulier:** Iedereen kan een bericht sturen naar de admin (simulatie).
+-   **Openbare chat:** Gebruikers kunnen realtime met elkaar chatten, met naam en tijdstip bij elk bericht.
+-   **Adminpanel:** Admins kunnen gebruikers beheren en rollen toekennen.
+-   **Dark mode:** De hele site is standaard in dark mode.
+-   **Responsief design:** Werkt op desktop én mobiel.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 📁 Projectstructuur
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Belangrijkste mappen/bestanden:
+/app/Http/Controllers/
 
-## Learning Laravel
+-   NewsController.php
+-   FaqController.php
+-   CategoryController.php
+-   ProfileController.php
+-   DashboardController.php
+-   UserController.php
+-   ChatController.php
+-   MessageController.php
+    /resources/views/
+-   news/
+-   faqs/
+-   categories/
+-   profile/
+-   dashboard.blade.php
+-   chat/
+-   formulier/
+-   layouts/
+-   components/
+    routes/web.php
+    README.md
+    > Bekijk de commits en broncode op GitHub:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 🛠️ Technische vereisten: waar geïmplementeerd?
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+-   **Login/registratie:**  
+    Breeze scaffolding. Zie: `routes/web.php`, `/app/Http/Controllers/Auth/`, `resources/views/auth/`
+-   **Profielpagina’s:**  
+    `ProfileController`, `resources/views/profile/`, profielmodel
+-   **Nieuws (CRUD):**  
+    `NewsController` (regels 10-89), `resources/views/news/`, `routes/web.php`
+-   **FAQ + categorieën (one-to-many):**  
+    `FaqController`, `CategoryController`, relatie gedefinieerd in model (`Faq` en `Category`). Zie `/database/migrations/`
+-   **Contactformulier:**  
+    `MessageController` (`show`, `send`, `index`), `resources/views/formulier/show.blade.php`
+-   **Openbare chat:**  
+    `ChatController`, `resources/views/chat/index.blade.php`
+-   **Gebruikersbeheer:**  
+    `UserController`
+-   **Middleware & beveiliging:**  
+    CSRF via Blade-directive, middleware in `routes/web.php`, input validatie in alle form-controllers
+-   **Eloquent modellen en relaties:**  
+    Zie `app/Models/`, bijv. User, News, Faq, Category, ContactMessage, ChatMessage
+-   **Database:**  
+    Migraties in `/database/migrations/`, seeders in `/database/seeders/`
+-   **Dark mode:**  
+    Tailwind classes `dark:` in alle views
+-   **Commit-historiek:**  
+    Zie commit messages in [GitHub](#)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+> **Opmerking:** Voor exacte lijnnummers verwijs ik naar de meest recente commit in de repo. Wil je specifieke commits benoemd zien? Deel een lijstje met commitberichten of een link naar een commit-overzicht.
 
-## Laravel Sponsors
+## 🚀 Installatiehandleiding
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+1. **Clone het project**
+    ```bash
+    git clone [https://github.com/NoahGoethals/backend-site1.git]
+    cd backend-site1
+    ```
+2. **Installeer dependencies**
+    ```bash
+    composer install
+    npm install && npm run build
+    ```
+3. **Kopieer de env-file**
+    ```bash
+    cp .env.example .env
+    ```
+4. **Genereer app key**
+    ```bash
+    php artisan key:generate
+    ```
+5. **Database instellen**  
+   Pas `.env` aan voor jouw (sqlite of mysql) database.  
+   Voor sqlite:
+    ```bash
+    touch database/database.sqlite
+    ```
+    Vul `.env` aan met:
+    ```
+    DB_CONNECTION=sqlite
+    DB_DATABASE=database/database.sqlite
+    ```
+6. **Migraties en seeders uitvoeren**
+    ```bash
+    php artisan migrate:fresh --seed
+    ```
+7. **Start de server**
+    ```bash
+    php artisan serve
+    ```
+8. **Login met admin**
+    - **Email:** admin@ehb.be
+    - **Wachtwoord:** Password!321
 
-### Premium Partners
+## 📸 Screenshots
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### Login
 
-## Contributing
+![Login](screenshots/login.png)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Registratie
 
-## Code of Conduct
+![Registratie](screenshots/registratie.png)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Dashboard
 
-## Security Vulnerabilities
+![Dashboard](screenshots/dashboard.png)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Profielpagina
 
-## License
+![Profielpagina](screenshots/profiel.png)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Nieuws
+
+![Nieuws](screenshots/nieuws.png)
+
+### FAQ
+
+![FAQ](screenshots/faq.png)
+
+### Categorieën
+
+![Categorieën](screenshots/categorieën.png)
+
+## 🔗 Gebruikte bronnen
+
+-   Laravel [https://laravel.com/](https://laravel.com/)
+-   TailwindCSS [https://tailwindcss.com/](https://tailwindcss.com/)
+-   [Stack Overflow](https://stackoverflow.com/)
+-   [ChatGPT (OpenAI)](https://chat.openai.com/)
+-   [Laravel Docs](https://laravel.com/docs/)
+
+## 👨‍💻 Auteur
+
+-   Noah Goethals
+-   Graduaat Programmeren, EhB 2025
+
+---
+
+## ❓ Vragen / feedback?
+
+Gebruik de **Contacteer ons** knop op de site!

@@ -19,7 +19,7 @@
     }
 
     input[type="datetime-local"]::-webkit-calendar-picker-indicator {
-        filter: invert(1); /* maakt icoon wit */
+        filter: invert(1); 
     }
 
     input::file-selector-button {

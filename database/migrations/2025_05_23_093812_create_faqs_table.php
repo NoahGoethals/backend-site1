@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('answer');
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->timestamp('published_at')->nullable();
-            $table->timestamps(); // created_at & updated_at
+            $table->timestamps(); 
         });
     }
 
