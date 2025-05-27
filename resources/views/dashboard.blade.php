@@ -33,6 +33,15 @@
                class="block text-blue-500 underline hover:text-blue-600">
               ▶ Vragen indienen
             </a>
+
+            @auth
+              @if(auth()->user()->is_admin)
+                <a href="{{ route('users.index') }}"
+                   class="block text-blue-500 underline hover:text-blue-600">
+                  ▶ Gebruikers beheren
+                </a>
+              @endif
+            @endauth
           </div>
 
         </div>
