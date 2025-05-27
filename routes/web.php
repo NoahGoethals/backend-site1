@@ -7,6 +7,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ChatController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,9 +36,12 @@ Route::get('/', [NewsController::class, 'index'])
 Route::get('/profile/{user}', [ProfileController::class, 'show'])
     ->name('profile.public');
 
+// Contactpagina (formulier tonen & versturen)
+Route::get('/contact', [ContactController::class, 'show'])->name('contact.show');
+Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
+
 // Auth (login/register/wachtwoord vergeten)
 require __DIR__ . '/auth.php';
-
 
 /* ===========================
  * 2. Ingelogde gebruikers (auth)
@@ -81,4 +86,8 @@ Route::middleware('auth')->group(function () {
 
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // === Openbare chat functionaliteit ===
+    Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+    Route::post('/chat', [ChatController::class, 'store'])->name('chat.store');
 });
