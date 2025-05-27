@@ -17,15 +17,15 @@ class MessageController extends Controller
     public function send(Request $request)
     {
         $request->validate([
-            'name' => 'required|max:255',
             'email' => 'required|email',
             'message' => 'required|max:2000',
         ]);
-
-        ContactMessage::create($request->only('name', 'email', 'message'));
-
+    
+        ContactMessage::create($request->only('email', 'message'));
+    
         return redirect()->route('contact.show')->with('success', 'Bedankt voor je bericht! We nemen spoedig contact op.');
     }
+    
 
     // Voor admin: toon alle berichten
     public function index()

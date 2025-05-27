@@ -7,8 +7,11 @@
         Website owner: <span class="font-semibold text-blue-400">superadmin@ehb.be</span>
     </div>
     @if(session('success'))
-        <div class="mb-4 text-green-500">{{ session('success') }}</div>
+    <div class="mb-4 text-white">
+        {{ session('success') }}
+    </div>
     @endif
+
     <form method="POST" action="{{ route('contact.send') }}" class="space-y-4">
         @csrf
         <input
