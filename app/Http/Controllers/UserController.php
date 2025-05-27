@@ -26,7 +26,6 @@ class UserController extends Controller
     // Demote admin naar gewone gebruiker
     public function demote(User $user)
     {
-        // Prevent yourself from demoting yourself!
         if (auth()->id() === $user->id) {
             return back()->with('error', 'Je kan jezelf niet demoten.');
         }
@@ -35,4 +34,39 @@ class UserController extends Controller
 
         return back()->with('success', "{$user->name} is geen admin meer.");
     }
+
+    // Toon formulier om nieuwe gebruiker aan te maken
+    public function create()
+    {
+        // Alleen admins mogen dit zien
+        if (!auth()->user()->is_admin) {
+            abort(403, 'Alleen admins kunnen gebruikers aanmaken.');
+        }
+        return view('users.create');
+    }
+
+    // Verwerk nieuwe gebruiker
+    public function store(Request $request)
+    {
+        if (!auth()->user()->is_admin) {
+            abort(403, 'Alleen admins kunnen gebruikers aanmaken.');
+        }
+    
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|string|min:6|confirmed',
+            // is_admin mag weg, want dat behandel je zelf hieronder
+        ]);
+    
+        User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => bcrypt($data['password']),
+            'is_admin' => $request->has('is_admin') ? 1 : 0,
+        ]);
+    
+        return redirect()->route('users.index')->with('success', 'Gebruiker toegevoegd!');
+    }
+    
 }

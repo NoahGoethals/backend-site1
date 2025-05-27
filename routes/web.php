@@ -13,58 +13,70 @@ use App\Http\Controllers\UserController;
 | Web Routes
 |--------------------------------------------------------------------------
 |
-| Hier definieer je alle web-routes van je applicatie.
-| Publieke pagina’s, ingelogde routes en admin-only management zijn gescheiden.
+| Dit zijn alle routes voor je Laravel 12 Backend Web project.
+| - Publieke routes: voor iedereen of niet-ingelogde gebruikers.
+| - Authenticated: enkel voor ingelogde gebruikers (middleware 'auth').
+| - Admin management: zichtbaarheid via Blade, restrictie in controller of policy.
 |
 */
 
-// === Publieke routes ===
+/* ===========================
+ * 1. Publieke routes (toegankelijk voor iedereen)
+ * ===========================
+ */
 
-// Startpagina (nieuws overzicht) — alleen voor ingelogde gebruikers
+// Nieuws-overzicht is standaard afgeschermd (auth)
 Route::get('/', [NewsController::class, 'index'])
     ->middleware('auth')
     ->name('home');
 
-// Publieke profielpagina (zonder login)
+// Publiek profiel, zonder login
 Route::get('/profile/{user}', [ProfileController::class, 'show'])
     ->name('profile.public');
 
-// Authenticatie-routes (login, register, wachtwoord reset, etc.)
+// Auth (login/register/wachtwoord vergeten)
 require __DIR__ . '/auth.php';
 
-// === Authenticated (ingelogde) routes ===
+
+/* ===========================
+ * 2. Ingelogde gebruikers (auth)
+ * ===========================
+ */
 Route::middleware('auth')->group(function () {
 
-    // Nieuws — alleen admins mogen toevoegen/bewerken/verwijderen via de Blade
+    // Nieuwsbeheer (CRUD via resource controller, alleen zichtbaar in Blade voor admin)
     Route::resource('news', NewsController::class);
 
-    // FAQ — index en vragen indienen voor alle ingelogde users
+    // FAQ: index en vraag indienen voor iedereen met account
     Route::get('/faqs', [FaqController::class, 'index'])->name('faqs.index');
-    Route::get('/faqs/ask',  [FaqController::class, 'ask'])->name('faqs.ask');
+    Route::get('/faqs/ask', [FaqController::class, 'ask'])->name('faqs.ask');
     Route::post('/faqs/ask', [FaqController::class, 'submit'])->name('faqs.submit');
-    // CRUD FAQ alleen zichtbaar/mogelijk voor admin via Blade
-    Route::get('/faqs/create',     [FaqController::class, 'create'])->name('faqs.create');
-    Route::post('/faqs',           [FaqController::class, 'store'])->name('faqs.store');
-    Route::get('/faqs/{faq}/edit', [FaqController::class, 'edit'])->name('faqs.edit');
-    Route::patch('/faqs/{faq}',    [FaqController::class, 'update'])->name('faqs.update');
-    Route::delete('/faqs/{faq}',   [FaqController::class, 'destroy'])->name('faqs.destroy');
 
-    // Categorieënbeheer (alleen zichtbaar/mogelijk voor admin via Blade)
-    Route::get('/categories',               [CategoryController::class, 'index'])->name('categories.index');
-    Route::get('/categories/create',        [CategoryController::class, 'create'])->name('categories.create');
-    Route::post('/categories',              [CategoryController::class, 'store'])->name('categories.store');
-    Route::get('/categories/{category}/edit',[CategoryController::class, 'edit'])->name('categories.edit');
-    Route::patch('/categories/{category}',  [CategoryController::class, 'update'])->name('categories.update');
+    // FAQ beheer (CRUD, alleen zichtbaar in Blade voor admin)
+    Route::get('/faqs/create', [FaqController::class, 'create'])->name('faqs.create');
+    Route::post('/faqs', [FaqController::class, 'store'])->name('faqs.store');
+    Route::get('/faqs/{faq}/edit', [FaqController::class, 'edit'])->name('faqs.edit');
+    Route::patch('/faqs/{faq}', [FaqController::class, 'update'])->name('faqs.update');
+    Route::delete('/faqs/{faq}', [FaqController::class, 'destroy'])->name('faqs.destroy');
+
+    // Categoriebeheer (CRUD, alleen zichtbaar in Blade voor admin)
+    Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+    Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
+    Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
+    Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
+    Route::patch('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
     Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 
-    // Gebruikersbeheer — alleen admin
+    // Gebruikersbeheer (alleen admin, zichtbaarheid via Blade)
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+    Route::post('/users', [UserController::class, 'store'])->name('users.store');
     Route::post('/users/{user}/promote', [UserController::class, 'promote'])->name('users.promote');
     Route::post('/users/{user}/demote', [UserController::class, 'demote'])->name('users.demote');
 
-    // Profiel — bewerken, updaten, verwijderen (voor ingelogde user zelf)
-    Route::get('/profile',    [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile',  [ProfileController::class, 'update'])->name('profile.update');
+    // Eigen profiel beheren
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Dashboard

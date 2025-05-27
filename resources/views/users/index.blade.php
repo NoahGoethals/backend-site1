@@ -17,6 +17,16 @@
         </div>
     @endif
 
+    {{-- Admin-only: Nieuwe gebruiker knop --}}
+    @if(auth()->user() && auth()->user()->is_admin)
+        <div class="mb-8 flex justify-end">
+            <a href="{{ route('users.create') }}"
+               class="px-4 py-2 bg-green-600 text-white rounded font-semibold hover:bg-green-700 transition">
+                ➕ Nieuwe gebruiker
+            </a>
+        </div>
+    @endif
+
     <div class="overflow-x-auto">
         <table class="w-full min-w-[800px] divide-y divide-gray-700 bg-gray-800 rounded shadow-lg">
             <thead>
