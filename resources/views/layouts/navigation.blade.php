@@ -17,6 +17,12 @@
                     </x-nav-link>
                 </div>
             </div>
+                 <!-- HIER de nieuwe gecentreerde knop -->
+                 <div class="flex items-center justify-center flex-1">
+                 <a href="{{ route('contact.show') }}" class="font-semibold text-white hover:underline">
+                 Contacteer ons
+                     </a>
+                    </div>
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">

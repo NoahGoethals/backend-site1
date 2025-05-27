@@ -39,11 +39,18 @@
               💬 Ga naar de chat
             </a>
 
+          
+
             @auth
               @if(auth()->user()->is_admin)
                 <a href="{{ route('users.index') }}"
                    class="block text-blue-500 underline hover:text-blue-600">
                   ▶ Gebruikers beheren
+                </a>
+
+                <a href="{{ route('contact.index') }}"
+                   class="block text-blue-500 underline hover:text-blue-600">
+                  📧 Contactberichten
                 </a>
               @endif
             @endauth
